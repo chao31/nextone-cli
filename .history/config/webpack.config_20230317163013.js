@@ -199,9 +199,9 @@ module.exports = {
   resolve: {
     // 自动补全文件扩展名
     extensions: [".jsx", ".js", ".json"],
-    alias: {
+    aliass: {
       //告诉 webpack，程序员写的代码中，＠符号表示 src 这一层目录
-      '@': path.join(__dirname,'../src/')
+      '@': path.join(__dirname,'./src/')
     },
   },
   devServer: {

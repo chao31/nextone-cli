@@ -1,0 +1,17 @@
+export {
+  Avatar,
+  Breadcrumb,
+  Button,
+  Card,
+  ConfigProvider,
+  Divider,
+  Dropdown,
+  Input,
+  Layout,
+  Menu,
+  Select,
+  Skeleton,
+  Table,
+  Tabs,
+  Tag,
+} from 'antd';

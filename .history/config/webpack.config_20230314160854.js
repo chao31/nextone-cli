@@ -8,17 +8,17 @@ const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
-// 获取 cross-env 定义的环境变量
+// 获取cross-env定义的环境变量
 const isProduction = process.env.NODE_ENV === "production";
 
-// 返回处理样式 loader 函数
+// 返回处理样式loader函数
 const getStyleLoaders = (pre) => {
   return [
     isProduction ? MiniCssExtractPlugin.loader : "style-loader",
     "css-loader",
     {
-      // 处理 css 兼容性问题
-      // 配合 package.json 中 browserslist 来指定兼容性
+      // 处理css兼容性问题
+      // 配合package.json中browserslist来指定兼容性
       loader: "postcss-loader",
       options: {
         postcssOptions: {
@@ -31,7 +31,7 @@ const getStyleLoaders = (pre) => {
       options:
         pre === "less-loader"
           ? {
-              // antd 自定义主题配置
+              // antd自定义主题配置
               // 主题色文档：https://ant.design/docs/react/customize-theme-cn#Ant-Design-%E7%9A%84%E6%A0%B7%E5%BC%8F%E5%8F%98%E9%87%8F
               lessOptions: {
                 modifyVars: { "@primary-color": "#1DA57A" },
@@ -44,7 +44,7 @@ const getStyleLoaders = (pre) => {
 };
 
 module.exports = {
-  entry: "./src/index.jsx",
+  entry: "./src/main.js",
   output: {
     path: isProduction ? path.resolve(__dirname, "../dist") : undefined,
     filename: isProduction ? "static/js/[name].[contenthash:10].js" : "static/js/[name].js",
@@ -54,7 +54,7 @@ module.exports = {
   },
   module: {
     rules: [
-      // 处理 css
+      // 处理css
       {
         test: /\.css$/,
         use: getStyleLoaders(),
@@ -86,7 +86,7 @@ module.exports = {
         test: /\.(woff2?|ttf)$/,
         type: "asset/resource",
       },
-      // 处理 js
+      // 处理js
       {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, "../src"),
@@ -95,13 +95,13 @@ module.exports = {
           cacheDirectory: true,
           cacheCompression: false,
           plugins: [
-            !isProduction && "react-refresh/babel", // 激活 js 的 HMR
+            !isProduction && "react-refresh/babel", // 激活js的HMR
           ].filter(Boolean),
         },
       },
     ],
   },
-  // 处理 html
+  // 处理html
   plugins: [
     new EslintWebpackPlugin({
       context: path.resolve(__dirname, "../src"),
@@ -124,13 +124,13 @@ module.exports = {
             from: path.resolve(__dirname, "../public"),
             to: path.resolve(__dirname, "../dist"),
             globOptions: {
-              // 忽略 index.html 文件
+              // 忽略index.html文件
               ignore: ["**/index.html"],
             },
           },
         ],
       }),
-    !isProduction && new ReactRefreshWebpackPlugin(), // 激活 js 的 HMR
+    !isProduction && new ReactRefreshWebpackPlugin(), // 激活js的HMR
   ].filter(Boolean),
   mode: isProduction ? "production" : "development",
   devtool: isProduction ? "source-map" : "cheap-module-source-map",
@@ -138,7 +138,7 @@ module.exports = {
     splitChunks: {
       chunks: "all",
       cacheGroups: {
-        // react react-dom react-router-dom 一起打包成一个 js 文件
+        // react react-dom react-router-dom 一起打包成一个js文件
         react: {
           test: /[\\/]node_modules[\\/]react(.*)?[\\/]/,
           name: "chunk-react",
@@ -150,7 +150,7 @@ module.exports = {
           name: "chunk-antd",
           priority: 30,
         },
-        // 剩下 node_modules 单独打包
+        // 剩下node_modules单独打包
         libs: {
           test: /[\\/]node_modules[\\/]/,
           name: "chunk-libs",
@@ -195,21 +195,17 @@ module.exports = {
       }),
     ],
   },
-  // webpack 解析模块加载选项
+  // webpack解析模块加载选项
   resolve: {
     // 自动补全文件扩展名
     extensions: [".jsx", ".js", ".json"],
-    alias: {
-      //告诉 webpack，程序员写的代码中，＠符号表示 src 这一层目录
-      '@': path.join(__dirname,'../src/')
-    },
   },
   devServer: {
     host: "localhost",
     port: 3010,
     open: true,
-    hot: true, // 开启 HMR
-    historyApiFallback: true, // 解决前端路由刷新 404 问题
+    hot: true, // 开启HMR
+    historyApiFallback: true, // 解决前端路由刷新404问题
   },
   performance: false, // 关闭性能分析，提升打包速度
 };

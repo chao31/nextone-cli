@@ -8,9 +8,7 @@ import { ConfigProvider } from '@/components';
 const router = createBrowserRouter(ROUTES); 
 const App = () => {
   return (
-    <ConfigProvider locale={zhCN}>
       <RouterProvider router={router} />
-    </ConfigProvider>
   );
 };
 
